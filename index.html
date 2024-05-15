@@ -2,9 +2,20 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <!-- The `<link>` tags are used to include external CSS files in the HTML document. -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+  <!-- Add Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
   <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.css" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Add Bootstrap JavaScript (Optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Add viewport meta tag for responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.css" crossorigin="anonymous">
 
   <!-- These script tags are importing JavaScript files from the Mediapipe library. -->
@@ -12,44 +23,50 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+
+  
+ 
+
+  <!-- Add custom styles -->
   <style>
-    *{
+    /* You can keep your custom styles here */
+    * {
       box-sizing: border-box;
     }
-    #clearButton
-    {
-      margin-left: 10px;
-      margin-top: 10px;
-      margin-bottom: 10px;
+    #clearButton,
+    #toggleButton {
+      margin: 10px;
       padding: 10px;
       border-radius: 10px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    #clearButton {
       background-color: #ff0000;
       color: white;
-      font-weight: bold;
-      font-size: 20px;
     }
-    #toggleButton
-    {
-      margin-left: 10px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 10px;
+    #toggleButton {
       background-color: green;
       color: white;
-      font-weight: bold;
-      font-size: 20px;
+    }
+    body {
+      overflow: scroll;
     }
   </style>
+  <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
 
-  <!-- BULMA NAVBAR -->
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div>
-      <button id="clearButton">clear</button>
-        <button id="toggleButton">Stop whiteboard</button>
+  <!-- Bootstrap Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" role="navigation" aria-label="main navigation">
+    <div class="container-fluid">
+      <button id="clearButton" class="btn btn-danger">clear</button>
+      <div class="icons">
+      <div id="pen"><i  class="fa-solid fa-pen"></i></div>
+      <div id="eraser"><i class="fa fa-eraser"></i></div>
+      </div>
+      <button id="toggleButton" class="btn btn-success">Stop whiteboard</button>
     </div>
   </nav>
 
@@ -57,61 +74,52 @@
   <div class="container">
 
 
-    <div class="columns">
+    <div class="row">
       
-      <!-- WEBCAM INPUT -->
-      <div  style="display: none;">
-        <article class="panel is-info">
-          <p class="panel-heading">
-            Webcam Input
-          </p>
-          <div class="panel-block">
+      <!-- WEBCAM INPUT (Hidden for now) -->
+      <div class="col-lg-6 d-none d-lg-block" style="display: none !important;">
+        <div class="card">
+          <div class="card-header">Webcam Input</div>
+          <div class="card-body">
             <video class="input_video3"></video>
           </div>
-        </article>
+        </div>
       </div>
 
       <!-- WHITEBOARD OUTPUT -->
-      <div class="column" style="width: 60%;">
-        <article class="panel is-info">
-          <p class="panel-heading">
-            whiteboard Output
-          </p>
-          <div class="panel-block" style="border: 5px solid black;">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header">Whiteboard Output</div>
+          <div class="card-body" style="border: 5px solid black;">
             <canvas height="480px" id="drawingCanvas">hy</canvas>
           </div>
-        </article>
         </div>
-
-      
-
-      <!-- MEDIAPIPE OUTPUT -->
-      <div class="column" id="output_screen">
-        <article class="panel is-info">
-          <p class="panel-heading">
-            User's Hand
-          </p>
-          <div class="panel-block">
-            <canvas class="output3"  height="480px" style="border: 1px solid red;"></canvas>
-          </div>
-        </article>
       </div>
 
-      
+      <!-- MEDIAPIPE OUTPUT -->
+      <div class="col-lg-6" id="output_screen">
+        <div class="card">
+          <div class="card-header">User's Hand</div>
+          <div class="card-body">
+            <canvas class="output3"  height="480px" style="border: 1px solid red;"></canvas>
+          </div>
+        </div>
+      </div>
 
     </div>
     
-      
     <div class="loading">
       <div class="spinner"></div>
     </div>
-  <div style="visibility: hidden;" class="control3">
+    <div style="visibility: hidden;" class="control3"></div>
   </div>
-    </div>
-    
-  
 
+  <div>
+    <i id="active-pen" class="fa-solid fa-pen"></i>
+    <i id="active-eraser" class="fa-solid fa-square"></i>
+  </div>
 
+  <!-- Your custom JavaScript -->
   <script type="text/javascript" src="./hands.js"></script>
 </body>
 </html>

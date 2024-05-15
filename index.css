@@ -1,0 +1,47 @@
+*
+{
+    padding:0;
+    margin:0;
+    
+}
+#pen
+{
+    width:48px;
+    height:35px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding: 0 7px;
+    border:1px solid black;
+    color:black;
+    background-color:lightgrey;
+}
+#active-pen{
+    display:none;
+}
+.icons
+{
+    display:flex;
+    justify-content:center;
+}
+.icons div
+{
+    margin:0 7px;
+}
+.icons #eraser
+{
+    width:48px;
+    height:35px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding: 0 7px;
+    border:1px solid black;
+    color:black;
+}
+#active-eraser
+{
+    display:none;
+    color:grey;
+    font-size:25px;
+}
